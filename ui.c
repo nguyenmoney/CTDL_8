@@ -32,9 +32,9 @@ void dungManHinhCho() {
     printf("\nNhan Enter de tiep tuc...");
 
     int c;
-    while ((c = getchar()) != '\n' && c != EOF);// Doc ki tu cho den khi gap Enter hoac EOF
+	while ((c = getchar()) != '\n' && c != EOF);// Doc ki tu cho den khi gap Enter hoac EOF
     if (c == EOF && feof(stdin)) {
-        clearerr(stdin);//Neu gap EOF, reset luong du lieu da doc
+		clearerr(stdin);//Neu gap EOF, reset luong du lieu da doc
     }
     else if (c != '\n') {//Neu khong phai la Enter, tiep tuc doc
     }
@@ -48,16 +48,16 @@ int nhapSoNguyenCoGioiHan(const char* prompt, int min, int max) {
     while (1) {
         printf("%s (%d-%d): ", prompt, min, max);
         if (docDongAnToan(buffer, sizeof(buffer), stdin) != NULL) {
-            if (sscanf(buffer, "%d", &value) == 1 && value >= min && value <= max) {//Kiem tra xem co phai la so nguyen trong khoang min-max
+			if (sscanf(buffer, "%d", &value) == 1 && value >= min && value <= max) {//Kiem tra xem co phai la so nguyen trong khoang min-max
 
-                char* endptr;//Chi nhan dau cho chuoi
-                strtol(buffer, &endptr, 10); // Chuyen doi chuoi sang so nguyen
-                if (*endptr == '\0' || isspace((unsigned char)*endptr)) { //Neu toan bo chuoi da duoc chuyen doi thanh so nguyen
-                    return value;//Tra ve gia tri so nguyen hop le
+				char* endptr;//Chi nhan dau cho chuoi
+				strtol(buffer, &endptr, 10); // Chuyen doi chuoi sang so nguyen
+				if (*endptr == '\0' || isspace((unsigned char)*endptr)) { //Neu toan bo chuoi da duoc chuyen doi thanh so nguyen
+					return value;//Tra ve gia tri so nguyen hop le
                 }
             }
         }
-        else { // Loi doc hoac ket thuc input
+		else { // Loi doc hoac ket thuc input
             printf("\nLoi nhap lieu hoac ket thuc input. Quay lai.\n");
             return min - 1;
         }
@@ -78,10 +78,10 @@ void inThongDiepThanhCong(const char* message) {
 
 //Menu quan ly benh nhan
 void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** bbBenhNhan_ptr, const char* tenFileCSV) {
-    BangBam* bbBenhNhan = *bbBenhNhan_ptr;
+    BangBam* bbBenhNhan = *bbBenhNhan_ptr; 
     int choice;
     do {
-        xoaManHinhConsole();//Xoa man hinh tu chuong trinh cua ban
+		xoaManHinhConsole();//Xoa man hinh tu chuong trinh cua ban
         printf("--- QUAN LY BENH NHAN ---\n");
         printf("1. Them benh nhan moi\n");
         printf("2. Sua thong tin benh nhan\n");
@@ -100,7 +100,7 @@ void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** b
             if (nhapThongTinBenhNhanTuBanPhim(&bnMoi, *dsBenhNhan, *soLuongBenhNhan, *bbBenhNhan_ptr)) {
 
                 if (themBenhNhan(dsBenhNhan, soLuongBenhNhan, bbBenhNhan_ptr, bnMoi, tenFileCSV)) {
-                    inThongDiepThanhCong("Them benh nhan moi thanh cong!");
+                    inThongDiepThanhCong("Them benh nhan moi thanh cong!"); 
                 }
                 else {
                     inThongDiepLoi("Them benh nhan moi that bai.");
@@ -109,7 +109,7 @@ void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** b
             else {
                 inThongDiepLoi("Huy them benh nhan moi hoac thong tin nhap khong hop le/bi trung.");
             }
-            dungManHinhCho();//Nhan Enter de tiep tuc
+			dungManHinhCho();//Nhan Enter de tiep tuc
             break;
         }
         case 2: { // Sua thong tin benh nhan
@@ -119,29 +119,29 @@ void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** b
             printf("Nhap Ma Dinh Danh cua benh nhan can sua: ");
             if (docDongAnToan(maSua_str_input, sizeof(maSua_str_input), stdin) == NULL || strlen(maSua_str_input) == 0) {//Kiem tra neu nhap hop le
                 inThongDiepLoi("Ma dinh danh khong duoc de trong.");
-                dungManHinhCho();//Nhan enter de tiep tuc
+				dungManHinhCho();//Nhan enter de tiep tuc
                 break;
             }
 
-            strncpy(maSua_str_upper, maSua_str_input, sizeof(maSua_str_upper) - 1);//Sao chep chuoi ma dinh danh
+			strncpy(maSua_str_upper, maSua_str_input, sizeof(maSua_str_upper) - 1);//Sao chep chuoi ma dinh danh
             maSua_str_upper[sizeof(maSua_str_upper) - 1] = '\0'; //Tranh tran bo nho
-            for (int k = 0; maSua_str_upper[k]; k++) maSua_str_upper[k] = toupper(maSua_str_upper[k]);//Chuyen chuoi ve chu hoa
+			for (int k = 0; maSua_str_upper[k]; k++) maSua_str_upper[k] = toupper(maSua_str_upper[k]);//Chuyen chuoi ve chu hoa
 
             BenhNhan* bnCanSuaTrucTiep = NULL;
             int benhNhanIndex = -1;
 
             if (bbBenhNhan != NULL) {
-                bnCanSuaTrucTiep = (BenhNhan*)timKiemTrongBangBam(bbBenhNhan, maSua_str_upper); //Gan benh nhan can sua tu bang bam
+				bnCanSuaTrucTiep = (BenhNhan*)timKiemTrongBangBam(bbBenhNhan, maSua_str_upper); //Gan benh nhan can sua tu bang bam
             }
             else {
                 inThongDiepLoi("Bang bam benh nhan khong kha dung. Khong the tim benh nhan de sua.");
-                dungManHinhCho();
+                dungManHinhCho(); 
                 break;
             }
 
             if (bnCanSuaTrucTiep != NULL) {
                 for (int i = 0; i < *soLuongBenhNhan; ++i) {
-                    if (&((*dsBenhNhan)[i]) == bnCanSuaTrucTiep) {//Tim benh nhan trong mang chinh
+					if (&((*dsBenhNhan)[i]) == bnCanSuaTrucTiep) {//Tim benh nhan trong mang chinh
                         benhNhanIndex = i;
                         break;
                     }
@@ -152,7 +152,7 @@ void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** b
                     break;
                 }
 
-                BenhNhan bnTamSua = *bnCanSuaTrucTiep; // Sao chep thong tin benh nhan can sua vao bien tam  
+				BenhNhan bnTamSua = *bnCanSuaTrucTiep; // Sao chep thong tin benh nhan can sua vao bien tam  
                 int suaLuaChonNoiBo;
                 char bufferNhapLieu[1000];
 
@@ -163,7 +163,7 @@ void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** b
                     printf("  1. Ten           : %s\n", bnTamSua.ten);
                     printf("  2. So Dien Thoai : %s\n", bnTamSua.soDienThoai);
                     printf("  3. BHYT          : %s\n", bnTamSua.bhyt);
-                    char ngaySinhStr_ui[12];
+                    char ngaySinhStr_ui[12]; 
                     snprintf(ngaySinhStr_ui, sizeof(ngaySinhStr_ui), "%02d/%02d/%04d", bnTamSua.ngaySinh.ngay, bnTamSua.ngaySinh.thang, bnTamSua.ngaySinh.nam);
                     printf("  4. Ngay Sinh     : %s\n", ngaySinhStr_ui);
                     printf("  5. Tuoi          : %d\n", bnTamSua.tuoi);
@@ -182,32 +182,32 @@ void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** b
 
                     switch (suaLuaChonNoiBo) {
                     case 1: // Sua Ten
-                        printf("Nhap Ten moi (hien tai: %s, KHONG DUOC BO TRONG): ", bnTamSua.ten);//Nhap vao ten moi
+						printf("Nhap Ten moi (hien tai: %s, KHONG DUOC BO TRONG): ", bnTamSua.ten);//Nhap vao ten moi
                         char tenCu[sizeof(bnTamSua.ten)];
-                        strcpy(tenCu, bnTamSua.ten);//Copy ten cu de kiem tra sau nay
+						strcpy(tenCu, bnTamSua.ten);//Copy ten cu de kiem tra sau nay
                         docDongAnToan(bnTamSua.ten, sizeof(bnTamSua.ten), stdin);
-                        if (strlen(bnTamSua.ten) == 0) {//Kiem tra neu ten khong de trong
+						if (strlen(bnTamSua.ten) == 0) {//Kiem tra neu ten khong de trong
                             inThongDiepLoi("Ten khong duoc de trong. Gia tri chua duoc thay doi.");
-                            strcpy(bnTamSua.ten, tenCu);// Neu ten de trong, tra ve ten cu
+							strcpy(bnTamSua.ten, tenCu);// Neu ten de trong, tra ve ten cu
                         }
                         break;
-                    case 2: //Sua So Dien Thoai
+					case 2: //Sua So Dien Thoai
                         printf("Nhap So Dien Thoai moi (hien tai: %s): ", bnTamSua.soDienThoai); //Nhap vao so dien thoai moi
-                        docDongAnToan(bnTamSua.soDienThoai, sizeof(bnTamSua.soDienThoai), stdin);
+                        docDongAnToan(bnTamSua.soDienThoai, sizeof(bnTamSua.soDienThoai), stdin); 
                         break;
-                    case 3:
-                        printf("Nhap BHYT moi (hien tai: %s): ", bnTamSua.bhyt); //Nhap vao BHYT moi
-                        docDongAnToan(bnTamSua.bhyt, sizeof(bnTamSua.bhyt), stdin);
+                    case 3: 
+						printf("Nhap BHYT moi (hien tai: %s): ", bnTamSua.bhyt); //Nhap vao BHYT moi
+                        docDongAnToan(bnTamSua.bhyt, sizeof(bnTamSua.bhyt), stdin); 
                         break;
                     case 4: { // Sua Ngay Sinh
                         printf("Nhap Ngay Sinh moi (ngay thang nam, vd: 15 01 1990, KHONG DUOC BO TRONG) (hien tai: %02d/%02d/%04d): ",
-                            bnTamSua.ngaySinh.ngay, bnTamSua.ngaySinh.thang, bnTamSua.ngaySinh.nam);//Nhap vao ngay sinh moi
+							bnTamSua.ngaySinh.ngay, bnTamSua.ngaySinh.thang, bnTamSua.ngaySinh.nam);//Nhap vao ngay sinh moi
                         Date ngaySinhCu = bnTamSua.ngaySinh;
-                        if (docDongAnToan(bufferNhapLieu, sizeof(bufferNhapLieu), stdin) != NULL && strlen(bufferNhapLieu) > 0) {//Kiem tra neu nhap hop le
+						if (docDongAnToan(bufferNhapLieu, sizeof(bufferNhapLieu), stdin) != NULL && strlen(bufferNhapLieu) > 0) {//Kiem tra neu nhap hop le
                             if (sscanf(bufferNhapLieu, "%d %d %d", &bnTamSua.ngaySinh.ngay, &bnTamSua.ngaySinh.thang, &bnTamSua.ngaySinh.nam) == 3) {
-                                if (bnTamSua.ngaySinh.ngay < 1 || bnTamSua.ngaySinh.ngay > 31 || bnTamSua.ngaySinh.thang < 1 || bnTamSua.ngaySinh.thang > 12 || bnTamSua.ngaySinh.nam < 1900 || bnTamSua.ngaySinh.nam > 2100) {//Kiem tra ngay sinh hop le
+								if (bnTamSua.ngaySinh.ngay < 1 || bnTamSua.ngaySinh.ngay > 31 || bnTamSua.ngaySinh.thang < 1 || bnTamSua.ngaySinh.thang > 12 || bnTamSua.ngaySinh.nam < 1900 || bnTamSua.ngaySinh.nam > 2100) {//Kiem tra ngay sinh hop le
                                     inThongDiepLoi("Ngay Sinh khong hop le (ngay/thang/nam khong dung). Gia tri chua duoc thay doi.");
-                                    bnTamSua.ngaySinh = ngaySinhCu;//Tra ve ngay sinh cu neu khong hop le
+									bnTamSua.ngaySinh = ngaySinhCu;//Tra ve ngay sinh cu neu khong hop le
                                 }
 
                             }
@@ -224,13 +224,13 @@ void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** b
                     }
                     case 5: { // Sua tuoi
                         printf("Nhap Tuoi moi (KHONG DUOC BO TRONG) (hien tai: %d): ", bnTamSua.tuoi); //Nhap vao tuoi moi
-                        int tuoiCu = bnTamSua.tuoi;//Copy tuoi cu de kiem tra sau nay
-                        if (docDongAnToan(bufferNhapLieu, sizeof(bufferNhapLieu), stdin) != NULL && strlen(bufferNhapLieu) > 0) { //Kiem tra neu nhap hop le
+						int tuoiCu = bnTamSua.tuoi;//Copy tuoi cu de kiem tra sau nay
+						if (docDongAnToan(bufferNhapLieu, sizeof(bufferNhapLieu), stdin) != NULL && strlen(bufferNhapLieu) > 0) { //Kiem tra neu nhap hop le
                             if (sscanf(bufferNhapLieu, "%d", &bnTamSua.tuoi) == 1 && bnTamSua.tuoi >= 0) { //Kiem tra neu tuoi hop le
                             }
                             else {
                                 inThongDiepLoi("Tuoi khong hop le ");
-                                bnTamSua.tuoi = tuoiCu; //Tra ve tuoi cu neu khong hop le 
+								bnTamSua.tuoi = tuoiCu; //Tra ve tuoi cu neu khong hop le 
                             }
                         }
                         else {
@@ -239,18 +239,18 @@ void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** b
                         }
                         break;
                     }
-                    case 6: //Sua Gioi Tinh
+					case 6: //Sua Gioi Tinh
                         printf("Nhap Gioi Tinh moi (Nam, Nu, Khac) (hien tai: %s): ", gioiTinhToString(bnTamSua.gioiTinh));//Nhap vao gioi tinh moi
                         docDongAnToan(bufferNhapLieu, sizeof(bufferNhapLieu), stdin);
-                        bnTamSua.gioiTinh = stringToGioiTinh(bufferNhapLieu); //Chuyen doi chuoi thanh gioi tinh
+						bnTamSua.gioiTinh = stringToGioiTinh(bufferNhapLieu); //Chuyen doi chuoi thanh gioi tinh
                         break;
-                    case 7: //Sua dia chi
-                        printf("Nhap Dia Chi moi (hien tai: %s): ", bnTamSua.diaChi); //Nhap vao dia chi moi
-                        docDongAnToan(bnTamSua.diaChi, sizeof(bnTamSua.diaChi), stdin);
-                        break;
-                    case 8: //Sua tieu su benh ly
-                        printf("Nhap Tieu Su Benh Ly moi (hien tai: %s): ", bnTamSua.tieuSuBenhLy); //Nhap vao tieu su benh ly moi
-                        docDongAnToan(bnTamSua.tieuSuBenhLy, sizeof(bnTamSua.tieuSuBenhLy), stdin);
+					case 7: //Sua dia chi
+						printf("Nhap Dia Chi moi (hien tai: %s): ", bnTamSua.diaChi); //Nhap vao dia chi moi
+                        docDongAnToan(bnTamSua.diaChi, sizeof(bnTamSua.diaChi), stdin); 
+                        break; 
+					case 8: //Sua tieu su benh ly
+						printf("Nhap Tieu Su Benh Ly moi (hien tai: %s): ", bnTamSua.tieuSuBenhLy); //Nhap vao tieu su benh ly moi
+                        docDongAnToan(bnTamSua.tieuSuBenhLy, sizeof(bnTamSua.tieuSuBenhLy), stdin); 
                         break;
                     case 0: { // HOAN TAT SUA DOI VA LUU
 
@@ -273,7 +273,7 @@ void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** b
                             break;
                         }
 
-                        // Neu kiem tra cuoi cung deu on thi cap nhat thong tin benh nhan
+						// Neu kiem tra cuoi cung deu on thi cap nhat thong tin benh nhan
                         char tempMaDinhDanh[MAX_LEN_MA_DINH_DANH_BN];
                         time_t tempNgayTaoHoSo;
 
@@ -289,7 +289,7 @@ void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** b
                         inThongDiepThanhCong("Da luu cac thay doi cho benh nhan!");
                         break;
                     }
-                    case 9: // Huy bo sua doi
+					case 9: // Huy bo sua doi
                         inThongDiepLoi("Da huy bo sua doi.");
                         suaLuaChonNoiBo = 0;
                         break;
@@ -312,32 +312,32 @@ void menuQuanLyBenhNhan(BenhNhan** dsBenhNhan, int* soLuongBenhNhan, BangBam** b
         }
         case 3: { // Xoa benh nhan
             char maXoa_str_input[MAX_LEN_MA_DINH_DANH_BN]; //Khai bao mang dau vao
-            char maXoa_str_upper[MAX_LEN_MA_DINH_DANH_BN]; //Khai bao mang chu hoa
+			char maXoa_str_upper[MAX_LEN_MA_DINH_DANH_BN]; //Khai bao mang chu hoa
             printf("Nhap Ma Dinh Danh cua benh nhan can xoa: ");
             if (docDongAnToan(maXoa_str_input, sizeof(maXoa_str_input), stdin) == NULL || strlen(maXoa_str_input) == 0) { //Kiem tra dau vao khong rong
                 inThongDiepLoi("Ma dinh danh khong duoc de trong.");
                 dungManHinhCho();
                 break;
             }
-            strncpy(maXoa_str_upper, maXoa_str_input, sizeof(maXoa_str_upper) - 1); //Sao chep chuoi ma dinh danh can xoa
+			strncpy(maXoa_str_upper, maXoa_str_input, sizeof(maXoa_str_upper) - 1); //Sao chep chuoi ma dinh danh can xoa
             maXoa_str_upper[sizeof(maXoa_str_upper) - 1] = '\0'; //Tranh tran bo nho
-            for (int k = 0; maXoa_str_upper[k]; k++) maXoa_str_upper[k] = toupper(maXoa_str_upper[k]);//Chuyen chuoi ve chu hoa
+			for (int k = 0; maXoa_str_upper[k]; k++) maXoa_str_upper[k] = toupper(maXoa_str_upper[k]);//Chuyen chuoi ve chu hoa
 
             // Xac nhan
             BenhNhan* bnCanXoa = NULL;
             if (bbBenhNhan != NULL) {
-                bnCanXoa = (BenhNhan*)timKiemTrongBangBam(bbBenhNhan, maXoa_str_upper);//Tim kiem benh nhan trong bang bam
+				bnCanXoa = (BenhNhan*)timKiemTrongBangBam(bbBenhNhan, maXoa_str_upper);//Tim kiem benh nhan trong bang bam
             }
             if (bnCanXoa != NULL) {
-                printf("Ban co chac chan muon xoa benh nhan: %s (Ma DD: %s)? (c/k): ", bnCanXoa->ten, bnCanXoa->maDinhDanh);//Xac nhan xoa
+				printf("Ban co chac chan muon xoa benh nhan: %s (Ma DD: %s)? (c/k): ", bnCanXoa->ten, bnCanXoa->maDinhDanh);//Xac nhan xoa
             }
             else {
-                printf("Ban co chac chan muon xoa benh nhan co Ma DD: %s (Khong tim thay ten nhanh)? (c/k): ", maXoa_str_upper);//Xac nhan xoa neu khong tim thay ten nhanh
+				printf("Ban co chac chan muon xoa benh nhan co Ma DD: %s (Khong tim thay ten nhanh)? (c/k): ", maXoa_str_upper);//Xac nhan xoa neu khong tim thay ten nhanh
             }
 
             char confirm[10];
             docDongAnToan(confirm, sizeof(confirm), stdin);
-            if (strlen(confirm) > 0 && tolower(confirm[0]) == 'c') { //Doc dau vao xac nhan
+			if (strlen(confirm) > 0 && tolower(confirm[0]) == 'c') { //Doc dau vao xac nhan
                 if (xoaBenhNhan(dsBenhNhan, soLuongBenhNhan, bbBenhNhan, maXoa_str_upper, tenFileCSV)) {
                     inThongDiepThanhCong("Xoa benh nhan thanh cong!");
                 }
@@ -429,7 +429,7 @@ void menuQuanLyLanKham(
 
     int choice;
 
-    do {
+	do {//Vong lap cho menu quan ly lan kham
         xoaManHinhConsole();
         printf("--- QUAN LY THONG TIN CAC LAN KHAM ---\n");
         printf("1. Xem danh sach tat ca lan kham\n");
@@ -442,12 +442,12 @@ void menuQuanLyLanKham(
         if (choice < 0) { choice = 0; }
 
         switch (choice) {
-        case 1: // Xem danh sách tất cả lần khám
+        case 1: // Xem danh sach tat ca lan kham
             xoaManHinhConsole();
             inDanhSachLanKhamConsole(*dsLanKham, *soLuongLanKham, dsBenhNhan, soLuongBenhNhan, bbBenhNhan);
             dungManHinhCho();
             break;
-        case 2: { // Tìm kiếm lần khám
+        case 2: { // Tim kiem lan kham
             char tieuChi[50], giaTri[100];
             LanKham* ketQuaTimKiem = NULL;
             int soLuongKQ = 0;
@@ -462,7 +462,6 @@ void menuQuanLyLanKham(
 
             if (luaChonTieuChi >= 1 && luaChonTieuChi <= 5) {
                 int maLKTimInt;
-				char maLKTimStr[25];
                 LanKham* lkTimThayBangBam = NULL;
 
                 if (luaChonTieuChi == 1) {
@@ -474,7 +473,6 @@ void menuQuanLyLanKham(
                     }
                     else if (sscanf(giaTri, "%d", &maLKTimInt) == 1 && maLKTimInt > 0) {
                         if (*bbLanKham_ptr != NULL) {
-                            intMaLKToString(maLKTimInt, maLKTimStr, sizeof(giaTri));
                             lkTimThayBangBam = timLanKhamTheoMaBangBam(*bbLanKham_ptr, maLKTimInt);
                             if (lkTimThayBangBam) {
                                 ketQuaTimKiem = (LanKham*)malloc(sizeof(LanKham));
@@ -494,7 +492,6 @@ void menuQuanLyLanKham(
                         inThongDiepLoi("Ma Lan Kham nhap vao khong hop le.");
                     }
                 }
-
                 else {
                     switch (luaChonTieuChi) {
                     case 2: strcpy(tieuChi, "MaDinhDanhBN"); break;
@@ -521,9 +518,7 @@ void menuQuanLyLanKham(
                 if (soLuongKQ > 0) {
                     printf("--- KET QUA TIM KIEM (%d lan kham) ---\n", soLuongKQ);
                     inDanhSachLanKhamConsole(ketQuaTimKiem, soLuongKQ, dsBenhNhan, soLuongBenhNhan, bbBenhNhan);
-                    if (ketQuaTimKiem) {
-                        free(ketQuaTimKiem);
-                    }
+                    if (ketQuaTimKiem) free(ketQuaTimKiem);
                 }
                 else {
                     printf("Khong tim thay lan kham nao phu hop.\n");
@@ -657,10 +652,10 @@ void menuQuanLyBacSi(
     KhoaPhong* dsKhoaPhong, int soLuongKhoaPhong, BangBam* bbKhoaPhong) {
 
     BangBam* bbBacSi = *bbBacSi_ptr;
-    int choice;
-    char bufferNhap[512];
+	int choice;// Khai bao bien lua chon
+	char bufferNhap[512];// Buffer cho nhap lieu
 
-    do {
+	do {// Vong lap cho menu quan ly bac si
         xoaManHinhConsole();
         printf("--- QUAN LY BAC SI ---\n");
         printf("1. Them bac si moi\n");
@@ -676,7 +671,6 @@ void menuQuanLyBacSi(
         switch (choice) {
         case 1: { // Them bac si moi
             BacSi bsMoi;
-            printf("\n--- THEM BAC SI MOI ---\n");
             printf("\n--- THEM BAC SI MOI ---\n");
             if (soLuongKhoaPhong == 0) {
                 inThongDiepLoi("Chua co khoa phong nao trong he thong. Vui long them khoa phong truoc.");
@@ -818,7 +812,7 @@ void menuQuanLyBacSi(
                         printf("Nhap Ma Khoa Phong moi (hien tai: %s, KHONG DUOC BO TRONG, phai ton tai, IN HOA): ", bsTamSua.maKhoaPhong);
                         if (soLuongKhoaPhong > 0 && dsKhoaPhong != NULL) {
                             printf("Cac ma khoa phong hien co:\n");
-                            inDanhSachKhoaPhongConsole(dsKhoaPhong, soLuongKhoaPhong);
+                            inDanhSachKhoaPhongConsole(dsKhoaPhong, soLuongKhoaPhong); 
                         }
                         else {
                             printf("Khong co du lieu khoa phong.\n");
@@ -1018,9 +1012,9 @@ void menuQuanLyBacSi(
 
 // Menu quan ly thuoc
 void menuQuanLyThuoc(Thuoc** dsThuoc, int* soLuongThuoc, BangBam** bbThuoc_ptr, const char* tenFileCSV) {
-    BangBam* bbThuoc = *bbThuoc_ptr;
+	BangBam* bbThuoc = *bbThuoc_ptr;// Lay con tro den BangBam Thuoc
     int choice;
-    char bufferNhap[512];
+	char bufferNhap[512];//Buffer cho nhap lieu
 
     do {
         xoaManHinhConsole();
@@ -1207,7 +1201,7 @@ void menuQuanLyThuoc(Thuoc** dsThuoc, int* soLuongThuoc, BangBam** bbThuoc_ptr, 
             dungManHinhCho();
             break;
         }
-        case 0:
+		case 0:// Quay lai menu chinh
             printf("Quay lai menu chinh...\n");
             break;
         default:
@@ -1221,9 +1215,9 @@ void menuQuanLyThuoc(Thuoc** dsThuoc, int* soLuongThuoc, BangBam** bbThuoc_ptr, 
 
 // Menu quan ly khoa phong
 void menuQuanLyKhoaPhong(KhoaPhong** dsKhoaPhong, int* soLuongKhoaPhong, BangBam** bbKhoaPhong_ptr, const char* tenFileCSV) {
-    BangBam* bbKhoaPhong = *bbKhoaPhong_ptr;
+	BangBam* bbKhoaPhong = *bbKhoaPhong_ptr;// Lay con tro den BangBam KhoaPhong
     int choice;
-    char bufferNhap[512];
+	char bufferNhap[512];//Buffer cho nhap lieu
 
     do {
         xoaManHinhConsole();
@@ -1240,7 +1234,7 @@ void menuQuanLyKhoaPhong(KhoaPhong** dsKhoaPhong, int* soLuongKhoaPhong, BangBam
         if (choice < 0) choice = 0;
 
         switch (choice) {
-        case 1: {
+		case 1: {// Them khoa phong moi
             KhoaPhong kpMoi;
             printf("\n--- THEM KHOA PHONG MOI ---\n");
 
@@ -1524,7 +1518,7 @@ void hienThiThongTinBangBam(BangBam* bb, const char* tenBangBam) {
     xoaManHinhConsole();
     printf("--- THONG TIN BANG BAM: %s ---\n", tenBangBam);
 
-    if (bb == NULL) {
+	if (bb == NULL) {// Neu bang bam chua duoc khoi tao, in thong bao loi
         printf("Bang bam '%s' chua duoc khoi tao (NULL).\n", tenBangBam);
         dungManHinhCho();
         return;
@@ -1534,16 +1528,16 @@ void hienThiThongTinBangBam(BangBam* bb, const char* tenBangBam) {
     printf("He so tai: %.2f\n", bb->soLuongPhanTu / (double)bb->dungLuong);
     printf("--------------------------------------------------\n");
 
-    if (bb->soLuongPhanTu == 0) {
+	if (bb->soLuongPhanTu == 0) {// Neu khong co phan tu nao trong bang bam, in thong bao
         printf("Bang bam '%s' rong.\n", tenBangBam);
     }
-    else {
+	else {// Neu co phan tu, in thong tin
         printf("| %-25s | %-15s |\n", "Khoa (Key)", "Chi So Bucket");
         printf("--------------------------------------------------\n");
         int count = 0;
         for (int i = 0; i < bb->dungLuong; ++i) {
-            NutBam* nutHienTai = bb->cacBucket[i];
-            while (nutHienTai != NULL) {
+			NutBam* nutHienTai = bb->cacBucket[i];// Lay bucket tai chi so i
+			while (nutHienTai != NULL) {// Duyet danh sach lien ket trong bucket
                 printf("| %-25s | %-15d |\n", nutHienTai->khoa, i);
                 nutHienTai = nutHienTai->tiepTheo;
                 count++;
@@ -1580,32 +1574,32 @@ void menuXemThongTinBangBam(
         if (choice < 0) { choice = 0; }
 
         switch (choice) {
-        case 1:
+		case 1:// Xem thong tin bang bam Benh Nhan
             if (bbBenhNhan) hienThiThongTinBangBam(bbBenhNhan, "BENH NHAN");
             else inThongDiepLoi("Bang bam Benh Nhan chua khoi tao.");
 
             break;
-        case 2:
+		case 2:// Xem thong tin bang bam Bac Si
             if (bbBacSi) hienThiThongTinBangBam(bbBacSi, "BAC SI");
             else inThongDiepLoi("Bang bam Bac Si chua khoi tao.");
 
             break;
-        case 3:
+		case 3:// Xem thong tin bang bam Khoa Phong
             if (bbKhoaPhong) hienThiThongTinBangBam(bbKhoaPhong, "KHOA PHONG");
             else inThongDiepLoi("Bang bam Khoa Phong chua khoi tao.");
 
             break;
-        case 4:
+		case 4:// Xem thong tin bang bam Thuoc
             if (bbThuoc) hienThiThongTinBangBam(bbThuoc, "THUOC");
             else inThongDiepLoi("Bang bam Thuoc chua khoi tao.");
 
             break;
-        case 5:
+		case 5:// Xem thong tin bang bam Lan Kham
             if (bbLanKham) hienThiThongTinBangBam(bbLanKham, "LAN KHAM");
             else inThongDiepLoi("Bang bam Lan Kham chua khoi tao.");
 
             break;
-        case 0:
+		case 0:// Quay lai menu chinh
             printf("Quay lai menu chinh...\n");
             break;
         default:
@@ -1651,7 +1645,7 @@ void xuLyLuaChonMenuChinh(
     BangBam* bbHangDoiTheoKhoa
 ) {
     switch (choice) {
-    case 1:
+	case 1:// Quan ly Benh Nhan
         if (bbBenhNhan_ptr == NULL || *bbBenhNhan_ptr == NULL) {
             inThongDiepLoi("He thong du lieu Benh Nhan chua san sang (Bang Bam NULL).");
             dungManHinhCho();
@@ -1659,7 +1653,7 @@ void xuLyLuaChonMenuChinh(
         }
         menuQuanLyBenhNhan(dsBenhNhan, soLuongBenhNhan, bbBenhNhan_ptr, fileBN);
         break;
-    case 2:
+	case 2:// Quan ly Thong Tin Cac Lan Kham
         if (bbLanKham_ptr == NULL || *bbLanKham_ptr == NULL ||
             bbBenhNhan_ptr == NULL || *bbBenhNhan_ptr == NULL ||
             bbBacSi_ptr == NULL || *bbBacSi_ptr == NULL ||
@@ -1675,7 +1669,7 @@ void xuLyLuaChonMenuChinh(
             bbHangDoiTheoKhoa,
             fileLK);
         break;
-    case 3: {
+	case 3: {// Dang ky kham moi
         xoaManHinhConsole();
         printf("--- DANG KY KHAM MOI ---\n");
         if (soLuongKhoaPhong == NULL || *soLuongKhoaPhong == 0) {
@@ -1698,7 +1692,7 @@ void xuLyLuaChonMenuChinh(
         dungManHinhCho();
         break;
     }
-    case 4: {
+	case 4: {// Goi benh nhan tiep theo vao kham (Theo Khoa)
         xoaManHinhConsole();
         printf("--- GOI BENH NHAN TIEP THEO (THEO KHOA) ---\n");
         if (bbHangDoiTheoKhoa == NULL) {
@@ -1810,7 +1804,7 @@ void xuLyLuaChonMenuChinh(
         dungManHinhCho();
         break;
     }
-    case 5: {
+    case 5: {// Cap nhat thong tin lan kham da goi
         xoaManHinhConsole();
         printf("--- CAP NHAT THONG TIN LAN KHAM DA GOI ---\n");
         if (bbBenhNhan_ptr == NULL || *bbBenhNhan_ptr == NULL ||
@@ -1858,7 +1852,7 @@ void xuLyLuaChonMenuChinh(
         dungManHinhCho();
         break;
     }
-    case 6: {
+	case 6: {// Quan ly/Cap nhat Don Thuoc
         xoaManHinhConsole();
         printf("--- QUAN LY / CAP NHAT DON THUOC ---\n");
         if (bbThuoc_ptr == NULL || *bbThuoc_ptr == NULL ||
@@ -1870,7 +1864,7 @@ void xuLyLuaChonMenuChinh(
 
         printf("Cac lan kham da hoan thanh va co chi dinh don thuoc:\n");
         int countLKCoDon = 0;
-        if (dsLanKham && *dsLanKham) { // Kiểm tra con trỏ
+        if (dsLanKham && *dsLanKham) { // Kiem tra con tro
             for (int i = 0; i < *soLuongLanKham; ++i) {
                 if ((*dsLanKham)[i].trangThai == LK_DA_HOAN_THANH && (*dsLanKham)[i].coDonThuoc == 1) {
                     char tenBNHienThi[101] = "N/A";
@@ -1928,7 +1922,7 @@ void xuLyLuaChonMenuChinh(
         dungManHinhCho();
         break;
     }
-    case 7:
+	case 7:// Quan ly Khoa Phong
         if (bbKhoaPhong_ptr == NULL || *bbKhoaPhong_ptr == NULL) {
             inThongDiepLoi("He thong du lieu Khoa Phong chua san sang (Bang Bam NULL).");
             dungManHinhCho();
@@ -1936,7 +1930,7 @@ void xuLyLuaChonMenuChinh(
         }
         menuQuanLyKhoaPhong(dsKhoaPhong, soLuongKhoaPhong, bbKhoaPhong_ptr, fileKP);
         break;
-    case 8:
+	case 8:// Quan ly Bac Si
         if (bbBacSi_ptr == NULL || *bbBacSi_ptr == NULL) {
             inThongDiepLoi("He thong du lieu Bac Si chua san sang (Bang Bam NULL).");
             dungManHinhCho();
@@ -1949,7 +1943,7 @@ void xuLyLuaChonMenuChinh(
         }
         menuQuanLyBacSi(dsBacSi, soLuongBacSi, bbBacSi_ptr, fileBS, *dsKhoaPhong, *soLuongKhoaPhong, *bbKhoaPhong_ptr);
         break;
-    case 9:
+	case 9:// Quan ly Danh Muc Thuoc
         if (bbThuoc_ptr == NULL || *bbThuoc_ptr == NULL) {
             inThongDiepLoi("He thong du lieu Thuoc chua san sang (Bang Bam NULL).");
             dungManHinhCho();
@@ -1957,7 +1951,7 @@ void xuLyLuaChonMenuChinh(
         }
         menuQuanLyThuoc(dsThuoc, soLuongThuoc, bbThuoc_ptr, fileT);
         break;
-    case 10: {
+	case 10: {// Xem Hang Doi Kham Benh (Theo Khoa)
         xoaManHinhConsole();
         printf("--- XEM HANG DOI KHAM BENH (THEO KHOA) ---\n");
         if (bbHangDoiTheoKhoa == NULL) {
@@ -2004,7 +1998,7 @@ void xuLyLuaChonMenuChinh(
         dungManHinhCho();
         break;
     }
-    case 11:
+	case 11:// Xem Thong Tin Bang Bam (Chi So Bucket)
         menuXemThongTinBangBam(
             (bbBenhNhan_ptr ? *bbBenhNhan_ptr : NULL),
             (bbBacSi_ptr ? *bbBacSi_ptr : NULL),
@@ -2013,10 +2007,10 @@ void xuLyLuaChonMenuChinh(
             (bbLanKham_ptr ? *bbLanKham_ptr : NULL)
         );
         break;
-    case 0:
+	case 0:// Thoat chuong trinh
         printf("Dang thoat chuong trinh...\n");
         break;
-    default:
+	default:// Lua chon khong hop le
         inThongDiepLoi("Lua chon khong hop le.");
         dungManHinhCho();
         break;
