@@ -1,4 +1,4 @@
-﻿#include "ui.h"            
+#include "ui.h"            
 #include "patient.h"        
 #include "examination.h"    
 #include "department.h"   
