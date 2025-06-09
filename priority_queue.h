@@ -11,7 +11,7 @@ typedef struct {
     int dungLuong;
 } HangDoiUuTienMotKhoa;
 
-// --- Khai báo các hàm ---
+// --- Khai bao cac ham  ---
 
 void khoiTaoHangDoiMotKhoa(HangDoiUuTienMotKhoa* hqmk);
 /*
